@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/presentation/home_screen.dart';
+import 'package:flutter_application_1/navigators/drawer_navigator.dart';
 import 'package:flutter_application_1/presentation/login_screen.dart';
 import 'package:flutter_application_1/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +24,13 @@ GoRouter getRouter(context) {
             builder: (context, state) => const LoginScreen(
                   title: 'Login Screen',
                 )),
-        GoRoute(path: '/home', builder: (context, state) => const HomeScreen())
+        GoRoute(
+            path: '/drawer',
+            builder: (context, state) => const DrawerNavigator())
       ],
       redirect: (context, state) {
         if (authProvider.isLoggedIn) {
-          return '/home';
+          return '/drawer';
         } else {
           return '/';
         }
