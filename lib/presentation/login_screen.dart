@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        value.login(context);
+                        value.login();
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
