@@ -9,6 +9,7 @@ class AuthProvider extends ChangeNotifier {
   late bool isLoggedIn = false;
   late GoogleAccountUserModel? userObj;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  bool isLoading = true;
 
   AuthProvider() {
     _getSharedPreferences();
@@ -22,6 +23,8 @@ class AuthProvider extends ChangeNotifier {
       Map<String, dynamic> jsonUser = jsonDecode(stringUser);
       userObj = GoogleAccountUserModel.fromJson(jsonUser);
     }
+
+    isLoading = false;
     notifyListeners();
   }
 
