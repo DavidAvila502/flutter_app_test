@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/pokemon_model.dart';
-import 'package:flutter_application_1/providers/auth_provider.dart';
+import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
+import 'package:flutter_application_1/config/providers/auth_provider.dart';
+import 'package:flutter_application_1/domain/use_cases/pokemon/pokemon_use_case.dart';
+import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_data_api.dart';
 import 'package:provider/provider.dart';
-import '../services/api.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,12 +13,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<PokemonModel>> pokemons;
+  late Future<List<Pokemon>> pokemons;
 
   @override
   void initState() {
     super.initState();
-    pokemons = getPokemonList();
+    pokemons = PokemonUseCase(PokemonDataApi()).getPokemonList();
   }
 
   @override
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 400,
               width: 300,
-              child: FutureBuilder<List<PokemonModel>>(
+              child: FutureBuilder<List<Pokemon>>(
                   future: pokemons,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
