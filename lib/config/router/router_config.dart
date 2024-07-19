@@ -1,7 +1,7 @@
-import 'package:flutter_application_1/navigators/drawer_navigator.dart';
-import 'package:flutter_application_1/presentation/login_screen.dart';
-import 'package:flutter_application_1/presentation/splash_screen.dart';
-import 'package:flutter_application_1/providers/auth_provider.dart';
+import 'package:flutter_application_1/presentation/navigators/drawer_navigator.dart';
+import 'package:flutter_application_1/presentation/screens/login_screen.dart';
+import 'package:flutter_application_1/presentation/screens/splash_screen.dart';
+import 'package:flutter_application_1/config/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 

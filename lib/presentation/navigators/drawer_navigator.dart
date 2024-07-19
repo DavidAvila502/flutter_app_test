@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/presentation/home_screen.dart';
-import 'package:flutter_application_1/presentation/settings_screen.dart';
-import 'package:flutter_application_1/providers/auth_provider.dart';
+import 'package:flutter_application_1/presentation/screens/home_screen.dart';
+import 'package:flutter_application_1/presentation/screens/settings_screen.dart';
+import 'package:flutter_application_1/config/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class DrawerNavigator extends StatefulWidget {

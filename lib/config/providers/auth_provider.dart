@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/google_account_user_model.dart';
+import 'package:flutter_application_1/domain/models/google_account_user/google_account_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   late SharedPreferences? _prefs;
   late bool isLoggedIn = false;
-  late GoogleAccountUserModel? userObj;
+  late GoogleAccountUser? userObj;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   bool isLoading = true;
 
@@ -21,7 +21,7 @@ class AuthProvider extends ChangeNotifier {
     String? stringUser = _prefs?.getString('user');
     if (stringUser != null) {
       Map<String, dynamic> jsonUser = jsonDecode(stringUser);
-      userObj = GoogleAccountUserModel.fromJson(jsonUser);
+      userObj = GoogleAccountUser.fromJson(jsonUser);
     }
 
     isLoading = false;
@@ -33,8 +33,8 @@ class AuthProvider extends ChangeNotifier {
       final GoogleSignInAccount? userData = await googleSignIn.signIn();
 
       if (userData != null) {
-        GoogleAccountUserModel userAccount =
-            GoogleAccountUserModel.fromGoogleSignInAccount(userData);
+        GoogleAccountUser userAccount =
+            GoogleAccountUser.fromGoogleSignInAccount(userData);
 
         userObj = userAccount;
         isLoggedIn = true;

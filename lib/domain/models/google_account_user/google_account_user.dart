@@ -1,22 +1,33 @@
+import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleAccountUserModel {
+GoogleAccountUser? googleAccountUserFromJson(String str) =>
+    GoogleAccountUser.fromJson(jsonDecode(str));
+
+String googleAccountUserToJson(GoogleAccountUser? user) =>
+    jsonEncode(user!.toJson());
+
+GoogleAccountUser googleAccountUserFromGoogleSigInAccount(
+        GoogleSignInAccount user) =>
+    GoogleAccountUser.fromGoogleSignInAccount(user);
+
+class GoogleAccountUser {
   final String? displayName;
   final String email;
   final String id;
   final String? photoUrl;
   final String? serverAuthCode;
 
-  GoogleAccountUserModel(
+  GoogleAccountUser(
       {required this.displayName,
       required this.email,
       required this.id,
       required this.photoUrl,
       required this.serverAuthCode});
 
-  factory GoogleAccountUserModel.fromGoogleSignInAccount(
+  factory GoogleAccountUser.fromGoogleSignInAccount(
       GoogleSignInAccount account) {
-    return GoogleAccountUserModel(
+    return GoogleAccountUser(
         displayName: account.displayName,
         email: account.email,
         id: account.id,
@@ -33,8 +44,8 @@ class GoogleAccountUserModel {
     };
   }
 
-  factory GoogleAccountUserModel.fromJson(Map<String, dynamic> json) {
-    return GoogleAccountUserModel(
+  factory GoogleAccountUser.fromJson(Map<String, dynamic> json) {
+    return GoogleAccountUser(
         displayName: json['displayName'],
         email: json['email'],
         id: json['id'],
