@@ -20,8 +20,7 @@ class AuthProvider extends ChangeNotifier {
     isLoggedIn = _prefs?.getBool('isLoggedIn') ?? false;
     String? stringUser = _prefs?.getString('user');
     if (stringUser != null) {
-      Map<String, dynamic> jsonUser = jsonDecode(stringUser);
-      userObj = GoogleAccountUser.fromJson(jsonUser);
+      userObj = googleAccountUserFromJson(stringUser);
     }
 
     isLoading = false;

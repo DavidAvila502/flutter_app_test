@@ -22,7 +22,8 @@ class PokemonDataApi extends PokemonRepository {
         "types": decodeResponse["types"]
             .map((type) => type['type']['name'])
             .toList(),
-        "sprite": decodeResponse["sprites"]["front_default"]
+        "sprite": decodeResponse["sprites"]["front_default"],
+        "id": decodeResponse["id"]
       };
 
       return currentPokemonCompletedata;

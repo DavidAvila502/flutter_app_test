@@ -3,6 +3,7 @@ import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 import 'package:flutter_application_1/config/providers/auth_provider.dart';
 import 'package:flutter_application_1/domain/use_cases/pokemon/pokemon_use_case.dart';
 import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_data_api.dart';
+import 'package:flutter_application_1/presentation/widgets/pokemon_list.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,38 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 400,
-              width: 300,
-              child: FutureBuilder<List<Pokemon>>(
-                  future: pokemons,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        itemCount: snapshot.data!.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(
-                          height: 10,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(snapshot.data![index].name),
-                              ));
-                        },
-                      );
-                    }
-
-                    return const Center(child: CircularProgressIndicator());
-                  }),
-            ),
-          ],
+          children: [PokemonList(pokemons: pokemons)],
         ),
       );
     });
