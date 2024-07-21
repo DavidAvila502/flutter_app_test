@@ -28,16 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Home Screen'),
-            ElevatedButton(
-              onPressed: () {
-                value.logout();
-              },
-              child: const Text('Logout'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
             SizedBox(
               height: 400,
               width: 300,
@@ -65,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
 
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   }),
             ),
           ],
