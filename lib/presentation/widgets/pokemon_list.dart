@@ -4,7 +4,7 @@ import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 class PokemonList extends StatefulWidget {
   const PokemonList({super.key, required this.pokemons});
 
-  final Future<List<Pokemon>> pokemons;
+  final List<Pokemon> pokemons;
 
   @override
   State<PokemonList> createState() => _PokemonList();
@@ -14,37 +14,29 @@ class _PokemonList extends State<PokemonList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
-      width: 350,
-      child: FutureBuilder<List<Pokemon>>(
-          future: widget.pokemons,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.separated(
-                itemCount: snapshot.data!.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return _ListItem(
-                    snapshot: snapshot,
-                    index: index,
-                  );
-                },
-              );
-            }
+        height: 400,
+        width: 350,
+        child: ListView.separated(
+          itemCount: widget.pokemons.length,
+          separatorBuilder: (BuildContext context, int index) => const SizedBox(
+            height: 10,
+          ),
+          itemBuilder: (context, index) {
+            return _ListItem(
+              pokemons: widget.pokemons,
+              index: index,
+            );
+          },
+        ));
 
-            return const Center(child: CircularProgressIndicator());
-          }),
-    );
+    // return const Center(child: CircularProgressIndicator());
   }
 }
 
 class _ListItem extends StatelessWidget {
-  const _ListItem({required this.snapshot, required this.index});
+  const _ListItem({required this.pokemons, required this.index});
 
-  final AsyncSnapshot<List<Pokemon>> snapshot;
+  final List<Pokemon> pokemons;
   final int index;
 
   @override
@@ -60,8 +52,8 @@ class _ListItem extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: snapshot.data![index].sprite != null
-                        ? NetworkImage(snapshot.data![index].sprite!)
+                    backgroundImage: pokemons[index].sprite != null
+                        ? NetworkImage(pokemons[index].sprite!)
                         : null,
                     minRadius: 40,
                     maxRadius: 40,
@@ -73,12 +65,12 @@ class _ListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        snapshot.data![index].name,
+                        pokemons[index].name,
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w500),
                       ),
                       Row(children: [
-                        ...snapshot.data![index].types.map(
+                        ...pokemons[index].types.map(
                             (type) => Text(_getEmojiofPokemonType(type) ?? '❔'))
                       ])
                     ],
@@ -99,7 +91,7 @@ class _ListItem extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  '#${snapshot.data![index].id.toString()}',
+                  '#${pokemons[index].id.toString()}',
                   style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),

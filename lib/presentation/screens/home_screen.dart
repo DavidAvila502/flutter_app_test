@@ -4,6 +4,7 @@ import 'package:flutter_application_1/config/providers/auth_provider.dart';
 import 'package:flutter_application_1/domain/use_cases/pokemon/pokemon_use_case.dart';
 import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_data_api.dart';
 import 'package:flutter_application_1/presentation/widgets/pokemon_list.dart';
+import 'package:flutter_application_1/presentation/widgets/search.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,12 +15,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Pokemon>> pokemons;
+  List<Pokemon> pokemonsFiltered = [];
+  List<Pokemon> pokemons = [];
+  String searchParam = '';
 
   @override
   void initState() {
     super.initState();
-    pokemons = PokemonUseCase(PokemonDataApi()).getPokemonList();
+    searchParam = '';
+    fetchData();
+  }
+
+  void setSearchParam(String param) {
+    setState(() {
+      searchParam = param;
+    });
+
+    _filterPokemons();
+  }
+
+  Future<void> fetchData() async {
+    List<Pokemon> data =
+        await PokemonUseCase(PokemonDataApi()).getPokemonList();
+
+    setState(() {
+      pokemons = data;
+      pokemonsFiltered = data;
+    });
+  }
+
+  void _filterPokemons() {
+    setState(() {
+      pokemonsFiltered = pokemons.where((pokemon) {
+        return pokemon.name.contains(searchParam.toLowerCase());
+      }).toList();
+    });
   }
 
   @override
@@ -28,7 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [PokemonList(pokemons: pokemons)],
+          children: [
+            Search(setSearchParam: setSearchParam),
+            const SizedBox(
+              height: 30,
+            ),
+            PokemonList(pokemons: pokemonsFiltered)
+          ],
         ),
       );
     });
