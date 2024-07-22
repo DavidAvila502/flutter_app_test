@@ -69,11 +69,20 @@ class _ListItem extends StatelessWidget {
                   const SizedBox(
                     width: 40,
                   ),
-                  Text(
-                    snapshot.data![index].name,
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        snapshot.data![index].name,
+                        style: const TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
+                      Row(children: [
+                        ...snapshot.data![index].types.map(
+                            (type) => Text(_getEmojiofPokemonType(type) ?? '❔'))
+                      ])
+                    ],
+                  )
                 ],
               ),
             ),
@@ -99,4 +108,31 @@ class _ListItem extends StatelessWidget {
           ],
         ));
   }
+}
+
+String? _getEmojiofPokemonType(String type) {
+  const Map<String, String> emojiType = {
+    'normal': '♟️',
+    'fighting': '👊🏼',
+    'flying': '🪽',
+    'poison': '🟣',
+    'ground': '⛱️',
+    'rock': '🪨',
+    'bug': '🐞',
+    'ghost': '👻',
+    'steel': '🩶',
+    'fire': '🔥',
+    'water': '🐟',
+    'grass': '🌿',
+    'electrict': '⚡',
+    'psychic': '🪬',
+    'ice': '🧊',
+    'dragon': '🐉',
+    'dark': '🎩',
+    'fairy': '✨',
+    'stellar': '⭐',
+    'unknown': '❔'
+  };
+
+  return emojiType[type];
 }
