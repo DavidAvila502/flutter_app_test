@@ -38,7 +38,7 @@ class _DrawerNavigator extends State<DrawerNavigator> {
               },
             ),
           ),
-          body: _screens[_selectedIndex],
+          body: SafeArea(child: _screens[_selectedIndex]),
           drawer: Drawer(
             child: ListView(
               padding: EdgeInsets.zero,

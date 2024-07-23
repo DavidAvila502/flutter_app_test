@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Pokemon> pokemonsFiltered = [];
   List<Pokemon> pokemons = [];
   String searchParam = '';
+  bool isPokemonLoading = false;
 
   @override
   void initState() {
@@ -35,12 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchData() async {
+    setState(() {
+      isPokemonLoading = true;
+    });
     List<Pokemon> data =
         await PokemonUseCase(PokemonDataApi()).getPokemonList();
 
     setState(() {
       pokemons = data;
       pokemonsFiltered = data;
+      isPokemonLoading = false;
     });
   }
 
@@ -55,15 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (context, value, child) {
-      return Center(
+      return SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Search(setSearchParam: setSearchParam),
             const SizedBox(
               height: 30,
             ),
-            PokemonList(pokemons: pokemonsFiltered)
+            PokemonList(
+              pokemons: pokemonsFiltered,
+              isPokemonLoading: isPokemonLoading,
+            )
           ],
         ),
       );

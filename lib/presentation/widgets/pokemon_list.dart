@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 
 class PokemonList extends StatefulWidget {
-  const PokemonList({super.key, required this.pokemons});
+  const PokemonList(
+      {super.key, required this.pokemons, required this.isPokemonLoading});
 
   final List<Pokemon> pokemons;
+  final bool isPokemonLoading;
 
   @override
   State<PokemonList> createState() => _PokemonList();
@@ -13,23 +15,26 @@ class PokemonList extends StatefulWidget {
 class _PokemonList extends State<PokemonList> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 400,
-        width: 350,
-        child: ListView.separated(
-          itemCount: widget.pokemons.length,
-          separatorBuilder: (BuildContext context, int index) => const SizedBox(
-            height: 10,
-          ),
-          itemBuilder: (context, index) {
-            return _ListItem(
-              pokemons: widget.pokemons,
-              index: index,
-            );
-          },
-        ));
+    var screenSize = MediaQuery.of(context).size;
 
-    // return const Center(child: CircularProgressIndicator());
+    return SizedBox(
+        height: screenSize.height * 0.7,
+        width: screenSize.width * 0.9,
+        child: widget.isPokemonLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.separated(
+                itemCount: widget.pokemons.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
+                  height: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return _ListItem(
+                    pokemons: widget.pokemons,
+                    index: index,
+                  );
+                },
+              ));
   }
 }
 
