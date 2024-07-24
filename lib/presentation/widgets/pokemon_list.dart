@@ -13,28 +13,65 @@ class PokemonList extends StatefulWidget {
 }
 
 class _PokemonList extends State<PokemonList> {
+  bool _isGrid = false;
+
+  void setIsGrid() {
+    setState(() {
+      _isGrid = !_isGrid;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
 
-    return SizedBox(
-        height: screenSize.height * 0.7,
+    return Column(children: <Widget>[
+      // * GRID - LIST BUTTON ***
+      SizedBox(
         width: screenSize.width * 0.9,
-        child: widget.isPokemonLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.separated(
-                itemCount: widget.pokemons.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                  height: 10,
-                ),
-                itemBuilder: (context, index) {
-                  return _ListItem(
-                    pokemons: widget.pokemons,
-                    index: index,
-                  );
-                },
-              ));
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTap: setIsGrid,
+              child: Icon(
+                _isGrid ? Icons.grid_3x3 : Icons.list,
+                size: 30,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+      ),
+
+      const SizedBox(
+        height: 10,
+      ),
+
+      // * POKEMON LIST ***
+
+      SizedBox(
+          height: screenSize.height * 0.7,
+          width: screenSize.width * 0.9,
+          child: widget.isPokemonLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.separated(
+                  itemCount: widget.pokemons.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                    height: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return _ListItem(
+                      pokemons: widget.pokemons,
+                      index: index,
+                    );
+                  },
+                )),
+    ]);
   }
 }
 
