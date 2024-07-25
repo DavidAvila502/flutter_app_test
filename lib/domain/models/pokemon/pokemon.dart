@@ -6,15 +6,22 @@ String pokemonToJson(Pokemon pokemon) => jsonEncode(pokemon.toJson());
 
 class Pokemon {
   final String name;
-  final String url;
+  final List<String> types;
+  final String? sprite;
+  final int id;
 
-  Pokemon({required this.name, required this.url});
+  Pokemon(
+      {required this.name, required this.types, this.sprite, required this.id});
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
-    return Pokemon(name: json['name'], url: json['url']);
+    return Pokemon(
+        name: json['name'],
+        types: List<String>.from(json['types']),
+        sprite: json["sprite"],
+        id: json["id"]);
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'url': url};
+    return {'name': name, 'types': types, 'sprite': sprite, 'id': id};
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 import 'package:flutter_application_1/config/providers/auth_provider.dart';
 import 'package:flutter_application_1/domain/use_cases/pokemon/pokemon_use_case.dart';
 import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_data_api.dart';
+import 'package:flutter_application_1/presentation/widgets/pokemon_list.dart';
+import 'package:flutter_application_1/presentation/widgets/search.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,61 +15,63 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Pokemon>> pokemons;
+  List<Pokemon> pokemonsFiltered = [];
+  List<Pokemon> pokemons = [];
+  String searchParam = '';
+  bool isPokemonLoading = false;
 
   @override
   void initState() {
     super.initState();
-    pokemons = PokemonUseCase(PokemonDataApi()).getPokemonList();
+    searchParam = '';
+    fetchData();
+  }
+
+  void setSearchParam(String param) {
+    setState(() {
+      searchParam = param;
+    });
+
+    _filterPokemons();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isPokemonLoading = true;
+    });
+    List<Pokemon> data =
+        await PokemonUseCase(PokemonDataApi()).getPokemonList();
+
+    setState(() {
+      pokemons = data;
+      pokemonsFiltered = data;
+      isPokemonLoading = false;
+    });
+  }
+
+  void _filterPokemons() {
+    setState(() {
+      pokemonsFiltered = pokemons.where((pokemon) {
+        return pokemon.name.contains(searchParam.toLowerCase());
+      }).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (context, value, child) {
-      return Center(
+      return SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Home Screen'),
-            ElevatedButton(
-              onPressed: () {
-                value.logout();
-              },
-              child: const Text('Logout'),
-            ),
+            Search(setSearchParam: setSearchParam),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
-            SizedBox(
-              height: 400,
-              width: 300,
-              child: FutureBuilder<List<Pokemon>>(
-                  future: pokemons,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        itemCount: snapshot.data!.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(
-                          height: 10,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(snapshot.data![index].name),
-                              ));
-                        },
-                      );
-                    }
-
-                    return const CircularProgressIndicator();
-                  }),
-            ),
+            PokemonList(
+              pokemons: pokemonsFiltered,
+              isPokemonLoading: isPokemonLoading,
+            )
           ],
         ),
       );
