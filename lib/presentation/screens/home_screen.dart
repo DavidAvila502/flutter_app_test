@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 import 'package:flutter_application_1/config/providers/auth_provider.dart';
+import 'package:flutter_application_1/domain/models/pokemon_page/pokemon_page.dart';
 import 'package:flutter_application_1/domain/use_cases/pokemon/pokemon_use_case.dart';
+import 'package:flutter_application_1/domain/use_cases/pokemon_page/pokemon_page_use_case.dart';
 import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_data_api.dart';
+import 'package:flutter_application_1/infraestructure/driven_adapter/api/pokemon_api/pokemon_page_data_api.dart';
 import 'package:flutter_application_1/presentation/widgets/pokemon_list.dart';
 import 'package:flutter_application_1/presentation/widgets/search.dart';
 import 'package:provider/provider.dart';
@@ -39,8 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isPokemonLoading = true;
     });
+
+    PokemonPage pokemonPage = await PokemonPageUseCase(PokemonPageDataApi())
+        .getPokemonPage('https://pokeapi.co/api/v2/pokemon');
+
     List<Pokemon> data =
-        await PokemonUseCase(PokemonDataApi()).getPokemonList();
+        await PokemonUseCase(PokemonDataApi()).getPokemonList(pokemonPage);
 
     setState(() {
       pokemons = data;
