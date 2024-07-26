@@ -22,12 +22,27 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Pokemon> pokemons = [];
   String searchParam = '';
   bool isPokemonLoading = false;
+  String? pokemonPageUrl = 'https://pokeapi.co/api/v2/pokemon';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     searchParam = '';
     fetchData();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        fetchData();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void setSearchParam(String param) {
@@ -39,21 +54,28 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchData() async {
+    if (isPokemonLoading || searchParam != '') {
+      return;
+    }
+
     setState(() {
       isPokemonLoading = true;
     });
 
-    PokemonPage pokemonPage = await PokemonPageUseCase(PokemonPageDataApi())
-        .getPokemonPage('https://pokeapi.co/api/v2/pokemon');
+    if (pokemonPageUrl != null) {
+      PokemonPage pokemonPage = await PokemonPageUseCase(PokemonPageDataApi())
+          .getPokemonPage(pokemonPageUrl!);
 
-    List<Pokemon> data =
-        await PokemonUseCase(PokemonDataApi()).getPokemonList(pokemonPage);
+      List<Pokemon> pokemonList =
+          await PokemonUseCase(PokemonDataApi()).getPokemonList(pokemonPage);
 
-    setState(() {
-      pokemons = data;
-      pokemonsFiltered = data;
-      isPokemonLoading = false;
-    });
+      setState(() {
+        pokemons.addAll(pokemonList);
+        pokemonsFiltered = pokemons;
+        isPokemonLoading = false;
+        pokemonPageUrl = pokemonPage.nextPage;
+      });
+    }
   }
 
   void _filterPokemons() {
@@ -78,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
             PokemonList(
               pokemons: pokemonsFiltered,
               isPokemonLoading: isPokemonLoading,
-            )
+              scrollController: _scrollController,
+            ),
           ],
         ),
       );

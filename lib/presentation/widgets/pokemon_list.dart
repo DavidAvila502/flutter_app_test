@@ -3,10 +3,14 @@ import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 
 class PokemonList extends StatefulWidget {
   const PokemonList(
-      {super.key, required this.pokemons, required this.isPokemonLoading});
+      {super.key,
+      required this.pokemons,
+      required this.isPokemonLoading,
+      required this.scrollController});
 
   final List<Pokemon> pokemons;
   final bool isPokemonLoading;
+  final ScrollController scrollController;
 
   @override
   State<PokemonList> createState() => _PokemonList();
@@ -57,20 +61,25 @@ class _PokemonList extends State<PokemonList> {
       SizedBox(
           height: screenSize.height * 0.7,
           width: screenSize.width * 0.9,
-          child: widget.isPokemonLoading
-              ? const Center(child: CircularProgressIndicator())
-              : GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: _isGrid ? 2 : 1,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: _isGrid ? 0.9 : 3),
-                  itemCount: widget.pokemons.length,
-                  itemBuilder: (context, index) {
-                    return !_isGrid
-                        ? _ListItem(pokemons: widget.pokemons, index: index)
-                        : _GridItem(pokemons: widget.pokemons, index: index);
-                  }))
+          child: GridView.builder(
+              controller: widget.scrollController,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: _isGrid ? 2 : 1,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: _isGrid ? 0.9 : 3),
+              itemCount: widget.pokemons.length + 1,
+              itemBuilder: (context, index) {
+                if (index == widget.pokemons.length) {
+                  return widget.isPokemonLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const SizedBox.shrink();
+                }
+
+                return !_isGrid
+                    ? _ListItem(pokemons: widget.pokemons, index: index)
+                    : _GridItem(pokemons: widget.pokemons, index: index);
+              }))
     ]);
   }
 }
@@ -231,7 +240,7 @@ String? _getEmojiofPokemonType(String type) {
     'fire': '🔥',
     'water': '🐟',
     'grass': '🌿',
-    'electrict': '⚡',
+    'electric': '⚡',
     'psychic': '🪬',
     'ice': '🧊',
     'dragon': '🐉',

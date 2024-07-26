@@ -17,8 +17,8 @@ class PokemonPage {
 
   factory PokemonPage.fromJson(Map<String, dynamic> json) {
     return PokemonPage(
-        nextPage: json['nextPage'],
-        previousPage: json['previousPage'],
+        nextPage: json['next'],
+        previousPage: json['previous'],
         results: List<dynamic>.from(json['results']));
   }
 
