@@ -93,9 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             Search(setSearchParam: setSearchParam),
             const SizedBox(
-              height: 30,
+              height: 10,
             ),
             PokemonList(
               pokemons: pokemonsFiltered,

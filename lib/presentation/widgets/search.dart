@@ -46,7 +46,8 @@ class _SearchState extends State<Search> {
                     controller: _searchController,
                     decoration: const InputDecoration(
                         hintText: 'Enter a pokemon name...',
-                        border: InputBorder.none)),
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: Colors.grey))),
               )
             ],
           ),

@@ -42,7 +42,7 @@ class _PokemonList extends State<PokemonList> {
               child: Icon(
                 _isGrid ? Icons.grid_3x3 : Icons.list,
                 size: 30,
-                color: Colors.blue,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             const SizedBox(
@@ -145,9 +145,9 @@ class _ListItem extends StatelessWidget {
                 Container(
                   height: double.infinity,
                   width: 80,
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
                     ),
@@ -183,7 +183,7 @@ class _GridItem extends StatelessWidget {
             width: double.infinity,
             height: 100,
             decoration: BoxDecoration(
-                color: Colors.blue[100],
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
@@ -206,9 +206,9 @@ class _GridItem extends StatelessWidget {
           const Spacer(),
           Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
               child: Padding(

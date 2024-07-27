@@ -27,7 +27,13 @@ class _DrawerNavigator extends State<DrawerNavigator> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('PokeApp'),
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              'PokeApp',
+              style: TextStyle(
+                color: Theme.of(context).hintColor,
+              ),
+            ),
             leading: Builder(
               builder: (context) {
                 return IconButton(
