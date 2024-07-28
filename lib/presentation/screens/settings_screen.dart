@@ -23,17 +23,17 @@ class SettingsScreen extends StatelessWidget {
               value: themeProvider.globalTheme,
               items: [
                 DropdownMenuItem(
-                  value: pokeBallTheme,
+                  value: listOfThemes[0],
                   child: const Text('Pokeball Theme'),
                 ),
                 DropdownMenuItem(
-                    value: blueTheme, child: const Text('Blue Theme')),
+                    value: listOfThemes[1], child: const Text('Blue Theme')),
                 DropdownMenuItem(
-                    value: purpleTheme, child: const Text('Purple Theme')),
+                    value: listOfThemes[2], child: const Text('Purple Theme')),
                 DropdownMenuItem(
-                    value: goldenTheme, child: const Text('Golden Theme')),
+                    value: listOfThemes[3], child: const Text('Golden Theme')),
               ],
-              onChanged: (ThemeData? theme) {
+              onChanged: (CustomTheme? theme) {
                 if (theme != null) {
                   themeProvider.setTheme(theme);
                 }

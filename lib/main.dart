@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: themeProvider.globalTheme,
+        theme: themeProvider.globalTheme.themeSettings,
         routerConfig: getRouterConfig(authProvider),
       );
     });
