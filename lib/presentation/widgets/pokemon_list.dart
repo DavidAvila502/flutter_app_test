@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
+import 'package:flutter_application_1/presentation/widgets/pokemon_modal_content.dart';
+import 'package:flutter_application_1/utils/get_emoji_of_pokemon_type.dart';
 
 class PokemonList extends StatefulWidget {
   const PokemonList(
@@ -106,12 +108,22 @@ class _ListItem extends StatelessWidget {
                     children: [
                       // * POKEMON IMAGE
 
-                      CircleAvatar(
-                        backgroundImage: pokemons[index].sprite != null
-                            ? NetworkImage(pokemons[index].sprite!)
-                            : null,
-                        minRadius: 40,
-                        maxRadius: 40,
+                      GestureDetector(
+                        child: CircleAvatar(
+                          backgroundImage: pokemons[index].sprite != null
+                              ? NetworkImage(pokemons[index].sprite!)
+                              : null,
+                          minRadius: 40,
+                          maxRadius: 40,
+                        ),
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return PokemonModalContent(
+                                    pokemons: pokemons, index: index);
+                              });
+                        },
                       ),
                       const SizedBox(
                         width: 40,
@@ -131,7 +143,7 @@ class _ListItem extends StatelessWidget {
                           // * POKEMON TYPES
                           Row(children: [
                             ...pokemons[index].types.map((type) =>
-                                Text(_getEmojiofPokemonType(type) ?? '❔'))
+                                Text(getEmojiofPokemonType(type) ?? '❔'))
                           ])
                         ],
                       )
@@ -173,12 +185,16 @@ class _GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // * Grid container ***
+
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: <Widget>[
+          // * Image Container ***
+
           Container(
             width: double.infinity,
             height: 100,
@@ -187,23 +203,44 @@ class _GridItem extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
-            child: Image(
-                image: pokemons[index].sprite != null
-                    ? NetworkImage(pokemons[index].sprite!)
-                    : const NetworkImage('')),
+
+            // * Pokemon image ***
+
+            child: GestureDetector(
+              child: Image(
+                  image: pokemons[index].sprite != null
+                      ? NetworkImage(pokemons[index].sprite!)
+                      : const NetworkImage('')),
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PokemonModalContent(
+                          pokemons: pokemons, index: index);
+                    });
+              },
+            ),
           ),
+
+          // * Pokemon name ***
+
           Text(pokemons[index].name,
               style:
                   const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+
+          // * Types ***
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ...pokemons[index]
                   .types
-                  .map((type) => Text(_getEmojiofPokemonType(type) ?? '❔'))
+                  .map((type) => Text(getEmojiofPokemonType(type) ?? '❔'))
             ],
           ),
           const Spacer(),
+
+          // * Pokemon number ***
           Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -224,31 +261,4 @@ class _GridItem extends StatelessWidget {
       ),
     );
   }
-}
-
-String? _getEmojiofPokemonType(String type) {
-  const Map<String, String> emojiType = {
-    'normal': '♟️',
-    'fighting': '👊🏼',
-    'flying': '🪽',
-    'poison': '🟣',
-    'ground': '⛱️',
-    'rock': '🪨',
-    'bug': '🐞',
-    'ghost': '👻',
-    'steel': '🩶',
-    'fire': '🔥',
-    'water': '🐟',
-    'grass': '🌿',
-    'electric': '⚡',
-    'psychic': '🪬',
-    'ice': '🧊',
-    'dragon': '🐉',
-    'dark': '🎩',
-    'fairy': '✨',
-    'stellar': '⭐',
-    'unknown': '❔'
-  };
-
-  return emojiType[type];
 }
