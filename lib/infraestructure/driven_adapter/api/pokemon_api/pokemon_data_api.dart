@@ -1,18 +1,14 @@
 import 'package:flutter_application_1/domain/models/pokemon/pokemon.dart';
 import 'package:flutter_application_1/domain/models/pokemon/repository/pokemon_repository.dart';
+import 'package:flutter_application_1/domain/models/pokemon_page/pokemon_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PokemonDataApi extends PokemonRepository {
   @override
-  Future<List<Pokemon>> getPokemonList() async {
-    var pokemonListUrl = Uri.https('pokeapi.co', '/api/v2/pokemon/');
-    var response = await http.get(pokemonListUrl);
-    var decodeResponse = jsonDecode(response.body);
-    List<dynamic> simplePokemonList = decodeResponse['results'];
-
+  Future<List<Pokemon>> getPokemonList(PokemonPage pokemonPage) async {
     Iterable<Future<Map<String, dynamic>>> pokemonListWithCompleteInfo =
-        simplePokemonList.map((currentPokemon) async {
+        pokemonPage.results.map((currentPokemon) async {
       var pokemonUrl = Uri.parse(currentPokemon['url']);
       var response = await http.get(pokemonUrl);
       var decodeResponse = jsonDecode(response.body);

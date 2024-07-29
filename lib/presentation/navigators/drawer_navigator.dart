@@ -27,7 +27,13 @@ class _DrawerNavigator extends State<DrawerNavigator> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('PokeApp'),
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              'PokeApp',
+              style: TextStyle(
+                color: Theme.of(context).hintColor,
+              ),
+            ),
             leading: Builder(
               builder: (context) {
                 return IconButton(
@@ -52,6 +58,7 @@ class _DrawerNavigator extends State<DrawerNavigator> {
                           : null,
                     )),
                 ListTile(
+                  leading: const Icon(Icons.home),
                   title: const Text('Home'),
                   selected: _selectedIndex == 0,
                   onTap: () {
@@ -59,14 +66,16 @@ class _DrawerNavigator extends State<DrawerNavigator> {
                     Navigator.pop(context);
                   },
                 ),
+                const Divider(),
                 ListTile(
+                  leading: const Icon(Icons.settings),
                   title: const Text('Settings'),
                   selected: _selectedIndex == 1,
                   onTap: () {
                     _onItemTapped(1);
                     Navigator.pop(context);
                   },
-                )
+                ),
               ],
             ),
           ),
