@@ -58,6 +58,7 @@ class _DrawerNavigator extends State<DrawerNavigator> {
                           : null,
                     )),
                 ListTile(
+                  leading: const Icon(Icons.home),
                   title: const Text('Home'),
                   selected: _selectedIndex == 0,
                   onTap: () {
@@ -65,14 +66,16 @@ class _DrawerNavigator extends State<DrawerNavigator> {
                     Navigator.pop(context);
                   },
                 ),
+                const Divider(),
                 ListTile(
+                  leading: const Icon(Icons.settings),
                   title: const Text('Settings'),
                   selected: _selectedIndex == 1,
                   onTap: () {
                     _onItemTapped(1);
                     Navigator.pop(context);
                   },
-                )
+                ),
               ],
             ),
           ),
