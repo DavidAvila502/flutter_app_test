@@ -17,11 +17,24 @@ class PokemonModalContent extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          CircleAvatar(
-            minRadius: 60,
-            maxRadius: 60,
-            child: Image(image: NetworkImage(pokemons[index].sprite!)),
-          ),
+          pokemons[index].sprite != null
+              ? CircleAvatar(
+                  backgroundImage: pokemons[index].sprite != null
+                      ? NetworkImage(pokemons[index].sprite!)
+                      : null,
+                  minRadius: 60,
+                  maxRadius: 60,
+                )
+              : Container(
+                  padding: const EdgeInsets.all(40),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.primaryContainer),
+                  child: Icon(
+                    Icons.image_not_supported,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
           const SizedBox(
             height: 20,
           ),

@@ -109,13 +109,26 @@ class _ListItem extends StatelessWidget {
                       // * POKEMON IMAGE
 
                       GestureDetector(
-                        child: CircleAvatar(
-                          backgroundImage: pokemons[index].sprite != null
-                              ? NetworkImage(pokemons[index].sprite!)
-                              : null,
-                          minRadius: 40,
-                          maxRadius: 40,
-                        ),
+                        child: pokemons[index].sprite != null
+                            ? CircleAvatar(
+                                backgroundImage: pokemons[index].sprite != null
+                                    ? NetworkImage(pokemons[index].sprite!)
+                                    : null,
+                                minRadius: 40,
+                                maxRadius: 40,
+                              )
+                            : Container(
+                                padding: const EdgeInsets.all(30),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer),
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                         onTap: () {
                           showModalBottomSheet(
                               context: context,
@@ -207,10 +220,19 @@ class _GridItem extends StatelessWidget {
             // * Pokemon image ***
 
             child: GestureDetector(
-              child: Image(
-                  image: pokemons[index].sprite != null
-                      ? NetworkImage(pokemons[index].sprite!)
-                      : const NetworkImage('')),
+              // child: Image(
+              //     image: pokemons[index].sprite != null
+              //         ? NetworkImage(pokemons[index].sprite!)
+              //         : const NetworkImage('')),
+              child: pokemons[index].sprite != null
+                  ? Image(image: NetworkImage(pokemons[index].sprite!))
+                  : Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+
               onTap: () {
                 showModalBottomSheet(
                     context: context,

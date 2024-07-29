@@ -63,18 +63,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     if (pokemonPageUrl != null) {
-      PokemonPage pokemonPage = await PokemonPageUseCase(PokemonPageDataApi())
-          .getPokemonPage(pokemonPageUrl!);
+      try {
+        PokemonPage pokemonPage = await PokemonPageUseCase(PokemonPageDataApi())
+            .getPokemonPage(pokemonPageUrl!);
 
-      List<Pokemon> pokemonList =
-          await PokemonUseCase(PokemonDataApi()).getPokemonList(pokemonPage);
+        List<Pokemon> pokemonList =
+            await PokemonUseCase(PokemonDataApi()).getPokemonList(pokemonPage);
 
-      setState(() {
-        pokemons.addAll(pokemonList);
-        pokemonsFiltered = pokemons;
-        isPokemonLoading = false;
-        pokemonPageUrl = pokemonPage.nextPage;
-      });
+        setState(() {
+          pokemons.addAll(pokemonList);
+          pokemonsFiltered = pokemons;
+          isPokemonLoading = false;
+          pokemonPageUrl = pokemonPage.nextPage;
+        });
+      } catch (error) {}
     }
   }
 
